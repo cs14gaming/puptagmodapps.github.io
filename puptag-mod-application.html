@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pup Tag — Moderator Application</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #050d1a;
+      --card: #0a1628;
+      --card2: #0d1e38;
+      --accent: #1a6fd4;
+      --accent2: #38b6ff;
+      --paw: #0e4fa3;
+      --paw-light: #4d9de0;
+      --text: #ddeeff;
+      --muted: #6688bb;
+      --border: #112244;
+      --input-bg: #070e1c;
+      --success: #56e39f;
+      --radius: 16px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 80px;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 80% 10%, rgba(26,111,212,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 10% 90%, rgba(56,182,255,0.12) 0%, transparent 60%);
+    }
+    body::before {
+      content: '🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾 🐾';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      font-size: 2rem;
+      opacity: 0.025;
+      letter-spacing: 8rem;
+      line-height: 10rem;
+      word-spacing: 8rem;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .container { width: 100%; max-width: 700px; position: relative; z-index: 1; }
+    .header { text-align: center; margin-bottom: 48px; animation: fadeDown 0.7s ease both; }
+    .header .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #0e4fa3, #38b6ff);
+      color: #fff;
+      font-family: 'Fredoka One', cursive;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      padding: 6px 18px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+    .header h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      line-height: 1.1;
+      background: linear-gradient(135deg, #38b6ff 0%, #1a6fd4 50%, #0e4fa3 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .header p { color: var(--muted); font-size: 1rem; font-weight: 600; max-width: 480px; margin: 0 auto; line-height: 1.6; }
+    .progress-wrap { background: var(--border); border-radius: 999px; height: 6px; margin-bottom: 36px; overflow: hidden; animation: fadeIn 0.5s ease 0.3s both; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, #0e4fa3, #38b6ff); border-radius: 999px; transition: width 0.5s cubic-bezier(.4,2,.6,1); width: 0%; }
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 20px;
+      animation: fadeUp 0.6s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+    .section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #0e4fa3, #38b6ff); }
+    .section:nth-child(2) { animation-delay: 0.1s; }
+    .section:nth-child(3) { animation-delay: 0.2s; }
+    .section:nth-child(4) { animation-delay: 0.3s; }
+    .section:nth-child(5) { animation-delay: 0.4s; }
+    .section-title { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+    .section-title .icon { font-size: 1.4rem; filter: drop-shadow(0 0 6px rgba(56,182,255,0.5)); }
+    .section-title h2 { font-family: 'Fredoka One', cursive; font-size: 1.25rem; color: var(--text); }
+    .field { margin-bottom: 20px; }
+    label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; color: var(--text); }
+    label .required { color: #38b6ff; margin-left: 3px; }
+    label .hint { font-weight: 600; color: var(--muted); font-size: 0.8rem; margin-left: 6px; }
+    input[type="text"], input[type="number"], select, textarea {
+      width: 100%; background: var(--input-bg); border: 1.5px solid var(--border);
+      border-radius: 10px; color: var(--text); font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem; font-weight: 600; padding: 12px 16px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s; resize: none;
+    }
+    input::placeholder, textarea::placeholder { color: var(--muted); font-weight: 600; }
+    input:focus, select:focus, textarea:focus { border-color: #1a6fd4; box-shadow: 0 0 0 3px rgba(26,111,212,0.2); }
+    select {
+      cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236688bb' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px;
+    }
+    select option { background: #0a1628; }
+    textarea { min-height: 110px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 500px) { .row { grid-template-columns: 1fr; } }
+    .char-count { text-align: right; font-size: 0.78rem; color: var(--muted); margin-top: 5px; font-weight: 600; }
+    .char-count.warn { color: #38b6ff; }
+    .char-count.over { color: #1a6fd4; }
+    .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .radio-group label {
+      margin: 0; background: var(--input-bg); border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 10px 18px; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      display: flex; align-items: center; gap: 8px; font-size: 0.9rem;
+    }
+    .radio-group input[type="radio"] { accent-color: #1a6fd4; width: auto; cursor: pointer; }
+    .radio-group label:has(input:checked) { border-color: #1a6fd4; background: rgba(26,111,212,0.12); }
+    .checkbox-label { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.9rem; color: var(--muted); font-weight: 600; }
+    .checkbox-label input[type="checkbox"] { accent-color: #1a6fd4; width: 18px; height: 18px; margin-top: 1px; flex-shrink: 0; cursor: pointer; }
+    .submit-wrap { text-align: center; margin-top: 12px; animation: fadeUp 0.6s ease 0.5s both; }
+    button[type="submit"] {
+      background: linear-gradient(135deg, #0e4fa3, #38b6ff);
+      color: #fff; font-family: 'Fredoka One', cursive; font-size: 1.2rem;
+      letter-spacing: 0.05em; border: none; border-radius: 12px;
+      padding: 16px 56px; cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+      box-shadow: 0 6px 32px rgba(26,111,212,0.45);
+    }
+    button[type="submit"]:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(56,182,255,0.5); }
+    button[type="submit"]:active { transform: translateY(0); }
+    button[type="submit"]:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .toast {
+      position: fixed; bottom: 32px; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--card2); border: 1px solid var(--success);
+      border-radius: 12px; padding: 14px 24px; font-weight: 700; font-size: 0.95rem;
+      color: var(--success); display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      transition: transform 0.4s cubic-bezier(.4,2,.6,1); z-index: 999; white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.error { color: #38b6ff; border-color: #1a6fd4; }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="badge">🐾 Staff Applications</div>
+    <h1>Pup Tag<br>Moderator Application</h1>
+    <p>Think you have what it takes to keep Pup Tag a safe and fun place? Fill out the form below!</p>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <input type="hidden" id="webhookUrl" value="https://discord.com/api/webhooks/1477546503563247741/ZPm4ebcXrmnW_QpqLD17tFY6KzIIjo9tUDBtps2cTe-V3_7f2SBehh643kLVpslLG6_B" />
+  <form id="modForm" novalidate>
+    <div class="section">
+      <div class="section-title"><span class="icon">🪪</span><h2>Personal Info</h2></div>
+      <div class="field">
+        <label>In-Game Username <span class="required">*</span></label>
+        <input type="text" name="username" placeholder="e.g. FluffyPup42" required maxlength="32" />
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Age <span class="required">*</span></label>
+          <input type="number" name="age" placeholder="e.g. 16" min="10" max="99" required />
+        </div>
+        <div class="field">
+          <label>Timezone <span class="required">*</span></label>
+          <select name="timezone" required>
+            <option value="" disabled selected>Select timezone</option>
+            <option>UTC-12 (Baker Island)</option><option>UTC-11 (Samoa)</option><option>UTC-10 (Hawaii)</option>
+            <option>UTC-9 (Alaska)</option><option>UTC-8 (Pacific Time)</option><option>UTC-7 (Mountain Time)</option>
+            <option>UTC-6 (Central Time)</option><option>UTC-5 (Eastern Time)</option><option>UTC-4 (Atlantic Time)</option>
+            <option>UTC-3 (Argentina)</option><option>UTC-2</option><option>UTC-1 (Azores)</option>
+            <option>UTC+0 (GMT / London)</option><option>UTC+1 (CET / Paris, Berlin)</option>
+            <option>UTC+2 (EET / Cairo)</option><option>UTC+3 (Moscow)</option><option>UTC+4 (Dubai)</option>
+            <option>UTC+5 (Pakistan)</option><option>UTC+5:30 (India)</option><option>UTC+6 (Bangladesh)</option>
+            <option>UTC+7 (Bangkok)</option><option>UTC+8 (China / Singapore)</option><option>UTC+9 (Japan / Korea)</option>
+            <option>UTC+10 (Sydney)</option><option>UTC+11 (Solomon Islands)</option><option>UTC+12 (New Zealand)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Discord Username <span class="required">*</span> <span class="hint">(so we can contact you)</span></label>
+        <input type="text" name="discord" placeholder="e.g. @fluffypup" required maxlength="64" />
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title"><span class="icon">🏅</span><h2>Experience &amp; Qualifications</h2></div>
+      <div class="field">
+        <label>Do you have any prior moderation experience? <span class="required">*</span></label>
+        <div class="radio-group">
+          <label><input type="radio" name="priorExp" value="Yes" required /> Yes</label>
+          <label><input type="radio" name="priorExp" value="No" /> No</label>
+          <label><input type="radio" name="priorExp" value="A little" /> A little</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>If yes, describe your moderation experience <span class="hint">(other games, Discord servers, etc.)</span></label>
+        <textarea name="expDetail" placeholder="Tell us about any past mod or staff roles you've held, even outside Pup Tag..." maxlength="600"></textarea>
+        <div class="char-count" id="expCount">0 / 600</div>
+      </div>
+      <div class="field">
+        <label>How long have you been playing Pup Tag? <span class="required">*</span></label>
+        <select name="playtime" required>
+          <option value="" disabled selected>Select duration</option>
+          <option>Less than 1 month</option><option>1–3 months</option><option>3–6 months</option>
+          <option>6–12 months</option><option>Over 1 year</option><option>Over 2 years</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>How many hours per week can you dedicate to moderating? <span class="required">*</span></label>
+        <select name="hours" required>
+          <option value="" disabled selected>Select hours</option>
+          <option>1–3 hours</option><option>3–6 hours</option><option>6–10 hours</option>
+          <option>10–15 hours</option><option>15+ hours</option>
+        </select>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title"><span class="icon">💬</span><h2>Why Do You Want This Role?</h2></div>
+      <div class="field">
+        <label>Why do you want to be a Pup Tag moderator? <span class="required">*</span></label>
+        <textarea name="whyMod" placeholder="Tell us what motivates you to take on this responsibility and what you hope to contribute to the community..." required maxlength="800"></textarea>
+        <div class="char-count" id="whyCount">0 / 800</div>
+      </div>
+      <div class="field">
+        <label>What qualities do you have that make you a great mod? <span class="required">*</span></label>
+        <textarea name="qualities" placeholder="e.g. patience, fairness, active daily, good knowledge of the rules..." required maxlength="600"></textarea>
+        <div class="char-count" id="qualCount">0 / 600</div>
+      </div>
+      <div class="field">
+        <label>How would you handle a situation where two players are arguing? <span class="required">*</span></label>
+        <textarea name="scenario" placeholder="Walk us through how you'd approach this situation step by step..." required maxlength="700"></textarea>
+        <div class="char-count" id="scenCount">0 / 700</div>
+      </div>
+      <div class="field">
+        <label>Anything else you'd like us to know? <span class="hint">(optional)</span></label>
+        <textarea name="extra" placeholder="Additional info, questions, or anything you'd like to share..." maxlength="400"></textarea>
+        <div class="char-count" id="extraCount">0 / 400</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title"><span class="icon">✅</span><h2>Agreement</h2></div>
+      <div class="field">
+        <label class="checkbox-label">
+          <input type="checkbox" id="agree" required />
+          I confirm that all information I have provided is accurate and truthful. I understand that submitting a false application may result in a permanent ban from Pup Tag.
+        </label>
+      </div>
+    </div>
+    <div class="submit-wrap">
+      <button type="submit" id="submitBtn">🐾 Submit Application</button>
+    </div>
+  </form>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){var _0x1a3f="Y29uc3QgZm9ybSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdtb2RGb3Jt";var _0x1a40="Jyk7CmNvbnN0IHByb2dyZXNzQmFyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5";var _0x1a41="SWQoJ3Byb2dyZXNzQmFyJyk7CgpmdW5jdGlvbiB1cGRhdGVQcm9ncmVzcygp";var _0x1a42="IHsKICBjb25zdCByZXF1aXJlZCA9IGZvcm0ucXVlcnlTZWxlY3RvckFsbCgn";var _0x1a43="W3JlcXVpcmVkXScpOwogIGNvbnN0IHJhZGlvTmFtZXMgPSBbLi4ubmV3IFNl";var _0x1a44="dChbLi4uZm9ybS5xdWVyeVNlbGVjdG9yQWxsKCdbdHlwZT1yYWRpb11bcmVx";var _0x1a45="dWlyZWRdJyldLm1hcChyID0+IHIubmFtZSkpXTsKICBjb25zdCBub25SYWRp";var _0x1a46="b1JlcXVpcmVkID0gWy4uLnJlcXVpcmVkXS5maWx0ZXIoZWwgPT4gZWwudHlw";var _0x1a47="ZSAhPT0gJ3JhZGlvJyk7CiAgY29uc3QgdG90YWwgPSBub25SYWRpb1JlcXVp";var _0x1a48="cmVkLmxlbmd0aCArIHJhZGlvTmFtZXMubGVuZ3RoOwogIGxldCBmaWxsZWRU";var _0x1a49="b3RhbCA9IDA7CiAgbm9uUmFkaW9SZXF1aXJlZC5mb3JFYWNoKGVsID0+IHsK";var _0x1a4a="ICAgIGlmIChlbC50eXBlID09PSAnY2hlY2tib3gnKSB7IGlmIChlbC5jaGVj";var _0x1a4b="a2VkKSBmaWxsZWRUb3RhbCsrOyB9CiAgICBlbHNlIGlmIChlbC52YWx1ZS50";var _0x1a4c="cmltKCkpIGZpbGxlZFRvdGFsKys7CiAgfSk7CiAgcmFkaW9OYW1lcy5mb3JF";var _0x1a4d="YWNoKG5hbWUgPT4gewogICAgaWYgKGZvcm0ucXVlcnlTZWxlY3RvcignW25h";var _0x1a4e="bWU9IicgKyBuYW1lICsgJyJdOmNoZWNrZWQnKSkgZmlsbGVkVG90YWwrKzsK";var _0x1a4f="ICB9KTsKICBwcm9ncmVzc0Jhci5zdHlsZS53aWR0aCA9IE1hdGgucm91bmQo";var _0x1a50="KGZpbGxlZFRvdGFsIC8gdG90YWwpICogMTAwKSArICclJzsKfQoKZm9ybS5h";var _0x1a51="ZGRFdmVudExpc3RlbmVyKCdpbnB1dCcsIHVwZGF0ZVByb2dyZXNzKTsKZm9y";var _0x1a52="bS5hZGRFdmVudExpc3RlbmVyKCdjaGFuZ2UnLCB1cGRhdGVQcm9ncmVzcyk7";var _0x1a53="CgpmdW5jdGlvbiBjaGFyQ291bnRlcih0ZXh0YXJlYSwgZGlzcGxheUlkKSB7";var _0x1a54="CiAgY29uc3QgbWF4ID0gcGFyc2VJbnQodGV4dGFyZWEuZ2V0QXR0cmlidXRl";var _0x1a55="KCdtYXhsZW5ndGgnKSk7CiAgY29uc3QgZGlzcGxheSA9IGRvY3VtZW50Lmdl";var _0x1a56="dEVsZW1lbnRCeUlkKGRpc3BsYXlJZCk7CiAgdGV4dGFyZWEuYWRkRXZlbnRM";var _0x1a57="aXN0ZW5lcignaW5wdXQnLCBmdW5jdGlvbigpIHsKICAgIGNvbnN0IGxlbiA9";var _0x1a58="IHRleHRhcmVhLnZhbHVlLmxlbmd0aDsKICAgIGRpc3BsYXkudGV4dENvbnRl";var _0x1a59="bnQgPSBsZW4gKyAnIC8gJyArIG1heDsKICAgIGRpc3BsYXkuY2xhc3NOYW1l";var _0x1a5a="ID0gJ2NoYXItY291bnQnICsgKGxlbiA+PSBtYXggPyAnIG92ZXInIDogbGVu";var _0x1a5b="ID49IG1heCAqIDAuODUgPyAnIHdhcm4nIDogJycpOwogIH0pOwp9CgpjaGFy";var _0x1a5c="Q291bnRlcihmb3JtLnF1ZXJ5U2VsZWN0b3IoJ1tuYW1lPSJleHBEZXRhaWwi";var _0x1a5d="XScpLCAnZXhwQ291bnQnKTsKY2hhckNvdW50ZXIoZm9ybS5xdWVyeVNlbGVj";var _0x1a5e="dG9yKCdbbmFtZT0id2h5TW9kIl0nKSwgJ3doeUNvdW50Jyk7CmNoYXJDb3Vu";var _0x1a5f="dGVyKGZvcm0ucXVlcnlTZWxlY3RvcignW25hbWU9InF1YWxpdGllcyJdJyks";var _0x1a60="ICdxdWFsQ291bnQnKTsKY2hhckNvdW50ZXIoZm9ybS5xdWVyeVNlbGVjdG9y";var _0x1a61="KCdbbmFtZT0ic2NlbmFyaW8iXScpLCAnc2NlbkNvdW50Jyk7CmNoYXJDb3Vu";var _0x1a62="dGVyKGZvcm0ucXVlcnlTZWxlY3RvcignW25hbWU9ImV4dHJhIl0nKSwgJ2V4";var _0x1a63="dHJhQ291bnQnKTsKCmZ1bmN0aW9uIHNob3dUb2FzdChtc2csIGlzRXJyb3Ip";var _0x1a64="IHsKICBjb25zdCB0ID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3RvYXN0";var _0x1a65="Jyk7CiAgdC50ZXh0Q29udGVudCA9IG1zZzsKICB0LmNsYXNzTmFtZSA9ICd0";var _0x1a66="b2FzdCcgKyAoaXNFcnJvciA/ICcgZXJyb3InIDogJycpICsgJyBzaG93JzsK";var _0x1a67="ICBzZXRUaW1lb3V0KGZ1bmN0aW9uKCkgeyB0LmNsYXNzTmFtZSA9ICd0b2Fz";var _0x1a68="dCcgKyAoaXNFcnJvciA/ICcgZXJyb3InIDogJycpOyB9LCA0MDAwKTsKfQoK";var _0x1a69="Zm9ybS5hZGRFdmVudExpc3RlbmVyKCdzdWJtaXQnLCBhc3luYyBmdW5jdGlv";var _0x1a6a="bihlKSB7CiAgZS5wcmV2ZW50RGVmYXVsdCgpOwogIGNvbnN0IHdlYmhvb2tV";var _0x1a6b="cmwgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnd2ViaG9va1VybCcpLnZh";var _0x1a6c="bHVlLnRyaW0oKTsKICBpZiAoIXdlYmhvb2tVcmwgfHwgIXdlYmhvb2tVcmwu";var _0x1a6d="c3RhcnRzV2l0aCgnaHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3Mv";var _0x1a6e="JykpIHsKICAgIHNob3dUb2FzdCgnSW52YWxpZCB3ZWJob29rLicsIHRydWUp";var _0x1a6f="OwogICAgcmV0dXJuOwogIH0KICBjb25zdCBidG4gPSBkb2N1bWVudC5nZXRF";var _0x1a70="bGVtZW50QnlJZCgnc3VibWl0QnRuJyk7CiAgYnRuLmRpc2FibGVkID0gdHJ1";var _0x1a71="ZTsKICBidG4udGV4dENvbnRlbnQgPSAn8J+QviBTZW5kaW5nLi4uJzsKICBj";var _0x1a72="b25zdCBmZCA9IG5ldyBGb3JtRGF0YShmb3JtKTsKICBjb25zdCBkYXRhID0g";var _0x1a73="T2JqZWN0LmZyb21FbnRyaWVzKGZkLmVudHJpZXMoKSk7CiAgY29uc3QgZW1i";var _0x1a74="ZWQgPSB7CiAgICB0aXRsZTogJ/CfkL4gTmV3IE1vZCBBcHBsaWNhdGlvbiDi";var _0x1a75="gJQgUHVwIFRhZycsCiAgICBjb2xvcjogMHgxYTZmZDQsCiAgICBmaWVsZHM6";var _0x1a76="IFsKICAgICAgeyBuYW1lOiAn8J+qqiBVc2VybmFtZScsIHZhbHVlOiBkYXRh";var _0x1a77="LnVzZXJuYW1lIHx8ICdOL0EnLCBpbmxpbmU6IHRydWUgfSwKICAgICAgeyBu";var _0x1a78="YW1lOiAn8J+OgiBBZ2UnLCB2YWx1ZTogZGF0YS5hZ2UgfHwgJ04vQScsIGlu";var _0x1a79="bGluZTogdHJ1ZSB9LAogICAgICB7IG5hbWU6ICfwn4yNIFRpbWV6b25lJywg";var _0x1a7a="dmFsdWU6IGRhdGEudGltZXpvbmUgfHwgJ04vQScsIGlubGluZTogdHJ1ZSB9";var _0x1a7b="LAogICAgICB7IG5hbWU6ICfwn5KsIERpc2NvcmQnLCB2YWx1ZTogZGF0YS5k";var _0x1a7c="aXNjb3JkIHx8ICdOL0EnLCBpbmxpbmU6IHRydWUgfSwKICAgICAgeyBuYW1l";var _0x1a7d="OiAn4o+x77iPIFBsYXl0aW1lJywgdmFsdWU6IGRhdGEucGxheXRpbWUgfHwg";var _0x1a7e="J04vQScsIGlubGluZTogdHJ1ZSB9LAogICAgICB7IG5hbWU6ICfwn5WQIEhv";var _0x1a7f="dXJzL1dlZWsnLCB2YWx1ZTogZGF0YS5ob3VycyB8fCAnTi9BJywgaW5saW5l";var _0x1a80="OiB0cnVlIH0sCiAgICAgIHsgbmFtZTogJ/Cfj4UgUHJpb3IgRXhwZXJpZW5j";var _0x1a81="ZT8nLCB2YWx1ZTogZGF0YS5wcmlvckV4cCB8fCAnTi9BJywgaW5saW5lOiBm";var _0x1a82="YWxzZSB9LAogICAgICB7IG5hbWU6ICfwn5OLIEV4cGVyaWVuY2UgRGV0YWls";var _0x1a83="cycsIHZhbHVlOiBkYXRhLmV4cERldGFpbCB8fCAnX05vbmUgcHJvdmlkZWRf";var _0x1a84="JywgaW5saW5lOiBmYWxzZSB9LAogICAgICB7IG5hbWU6ICfwn5KtIFdoeSBE";var _0x1a85="byBZb3UgV2FudCBUbyBCZSBBIE1vZD8nLCB2YWx1ZTogZGF0YS53aHlNb2Qg";var _0x1a86="fHwgJ04vQScsIGlubGluZTogZmFsc2UgfSwKICAgICAgeyBuYW1lOiAn4pyo";var _0x1a87="IFF1YWxpdGllcycsIHZhbHVlOiBkYXRhLnF1YWxpdGllcyB8fCAnTi9BJywg";var _0x1a88="aW5saW5lOiBmYWxzZSB9LAogICAgICB7IG5hbWU6ICfimpbvuI8gU2NlbmFy";var _0x1a89="aW86IFR3byBQbGF5ZXJzIEFyZ3VpbmcnLCB2YWx1ZTogZGF0YS5zY2VuYXJp";var _0x1a8a="byB8fCAnTi9BJywgaW5saW5lOiBmYWxzZSB9LAogICAgICB7IG5hbWU6ICfw";var _0x1a8b="n5OdIEFueXRoaW5nIEVsc2U/JywgdmFsdWU6IGRhdGEuZXh0cmEgfHwgJ19O";var _0x1a8c="b3RoaW5nIGFkZGl0aW9uYWxfJywgaW5saW5lOiBmYWxzZSB9LAogICAgXSwK";var _0x1a8d="ICAgIGZvb3RlcjogeyB0ZXh0OiAnUHVwIFRhZyBNb2QgQXBwbGljYXRpb25z";var _0x1a8e="IOKAoiBTdWJtaXR0ZWQgdmlhIHdlYiBmb3JtJyB9LAogICAgdGltZXN0YW1w";var _0x1a8f="OiBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCksCiAgfTsKICB0cnkgewogICAg";var _0x1a90="Y29uc3QgcmVzID0gYXdhaXQgZmV0Y2god2ViaG9va1VybCwgewogICAgICBt";var _0x1a91="ZXRob2Q6ICdQT1NUJywKICAgICAgaGVhZGVyczogeyAnQ29udGVudC1UeXBl";var _0x1a92="JzogJ2FwcGxpY2F0aW9uL2pzb24nIH0sCiAgICAgIGJvZHk6IEpTT04uc3Ry";var _0x1a93="aW5naWZ5KHsgZW1iZWRzOiBbZW1iZWRdIH0pLAogICAgfSk7CiAgICBpZiAo";var _0x1a94="cmVzLm9rIHx8IHJlcy5zdGF0dXMgPT09IDIwNCkgewogICAgICBzaG93VG9h";var _0x1a95="c3QoIuKchSBBcHBsaWNhdGlvbiBzdWJtaXR0ZWQhIFdlJ2xsIGJlIGluIHRv";var _0x1a96="dWNoIHNvb24g8J+QviIpOwogICAgICBmb3JtLnJlc2V0KCk7CiAgICAgIHBy";var _0x1a97="b2dyZXNzQmFyLnN0eWxlLndpZHRoID0gJzAlJzsKICAgICAgZG9jdW1lbnQu";var _0x1a98="cXVlcnlTZWxlY3RvckFsbCgnLmNoYXItY291bnQnKS5mb3JFYWNoKGZ1bmN0";var _0x1a99="aW9uKGVsKSB7IGVsLnRleHRDb250ZW50ID0gZWwudGV4dENvbnRlbnQucmVw";var _0x1a9a="bGFjZSgvXlxkKy8sICcwJyk7IH0pOwogICAgfSBlbHNlIHsKICAgICAgc2hv";var _0x1a9b="d1RvYXN0KCfinYwgRmFpbGVkIHRvIHN1Ym1pdC4nLCB0cnVlKTsKICAgIH0K";var _0x1a9c="ICB9IGNhdGNoKGVycikgewogICAgc2hvd1RvYXN0KCfinYwgTmV0d29yayBl";var _0x1a9d="cnJvci4nLCB0cnVlKTsKICB9CiAgYnRuLmRpc2FibGVkID0gZmFsc2U7CiAg";var _0x1a9e="YnRuLnRleHRDb250ZW50ID0gJ/CfkL4gU3VibWl0IEFwcGxpY2F0aW9uJzsK";var _0x1a9f="fSk7Cg==";var _0xd3f1=_0x1a3f+_0x1a40+_0x1a41+_0x1a42+_0x1a43+_0x1a44+_0x1a45+_0x1a46+_0x1a47+_0x1a48+_0x1a49+_0x1a4a+_0x1a4b+_0x1a4c+_0x1a4d+_0x1a4e+_0x1a4f+_0x1a50+_0x1a51+_0x1a52+_0x1a53+_0x1a54+_0x1a55+_0x1a56+_0x1a57+_0x1a58+_0x1a59+_0x1a5a+_0x1a5b+_0x1a5c+_0x1a5d+_0x1a5e+_0x1a5f+_0x1a60+_0x1a61+_0x1a62+_0x1a63+_0x1a64+_0x1a65+_0x1a66+_0x1a67+_0x1a68+_0x1a69+_0x1a6a+_0x1a6b+_0x1a6c+_0x1a6d+_0x1a6e+_0x1a6f+_0x1a70+_0x1a71+_0x1a72+_0x1a73+_0x1a74+_0x1a75+_0x1a76+_0x1a77+_0x1a78+_0x1a79+_0x1a7a+_0x1a7b+_0x1a7c+_0x1a7d+_0x1a7e+_0x1a7f+_0x1a80+_0x1a81+_0x1a82+_0x1a83+_0x1a84+_0x1a85+_0x1a86+_0x1a87+_0x1a88+_0x1a89+_0x1a8a+_0x1a8b+_0x1a8c+_0x1a8d+_0x1a8e+_0x1a8f+_0x1a90+_0x1a91+_0x1a92+_0x1a93+_0x1a94+_0x1a95+_0x1a96+_0x1a97+_0x1a98+_0x1a99+_0x1a9a+_0x1a9b+_0x1a9c+_0x1a9d+_0x1a9e+_0x1a9f;(new Function(atob(_0xd3f1)))();})();
+</script>
+</body>
+</html>
